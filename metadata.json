@@ -1,0 +1,8 @@
+{
+  "name": "e-Class Live Platform",
+  "description": "A high-fidelity simulation of an online teaching platform flow: from course detail to device setup and live classroom interface.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
