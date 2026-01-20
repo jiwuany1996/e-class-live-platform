@@ -5,8 +5,10 @@ import RecordedCourseDetail from './components/RecordedCourseDetail';
 import DeviceSetup from './components/DeviceSetup';
 import Classroom from './components/Classroom';
 import Home from './components/Home';
+import CreateActivityWizard from './components/CreateActivityWizard';
+import Workbench from './components/Workbench';
 
-type Step = 'home' | 'detail' | 'recorded-detail' | 'setup' | 'classroom';
+type Step = 'home' | 'detail' | 'recorded-detail' | 'setup' | 'classroom' | 'create-activity' | 'workbench';
 
 const App: React.FC = () => {
   const [step, setStep] = useState<Step>('home');
@@ -47,13 +49,29 @@ const App: React.FC = () => {
     setStep('home');
   };
 
+  // Create Activity Handlers
+  const handleStartCreateActivity = () => {
+    setStep('create-activity');
+  };
+
+  const handleFinishCreateActivity = () => {
+    // Go straight to Workbench after creating activity
+    setStep('workbench');
+  };
+
+  const handleExitWorkbench = () => {
+    setHomeActiveItem("在线集体教研系统");
+    setStep('home');
+  }
+
   return (
     <div className="font-sans text-gray-900">
       {step === 'home' && (
         <Home 
           onEnterResearch={handleEnterResearch} 
           onEnterCourse={handleEnterCourse}
-          initialActiveItem={homeActiveItem} 
+          initialActiveItem={homeActiveItem}
+          onCreateActivity={handleStartCreateActivity}
         />
       )}
 
@@ -63,6 +81,17 @@ const App: React.FC = () => {
 
       {step === 'recorded-detail' && (
         <RecordedCourseDetail onEnterLive={handleEnterLive} onGoHome={handleGoHome} />
+      )}
+      
+      {step === 'create-activity' && (
+        <CreateActivityWizard 
+          onBack={handleGoHome}
+          onFinish={handleFinishCreateActivity}
+        />
+      )}
+      
+      {step === 'workbench' && (
+        <Workbench onBack={handleExitWorkbench} />
       )}
       
       {step === 'setup' && (
